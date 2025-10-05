@@ -37,6 +37,12 @@ use Illuminate\Support\Facades\Storage;
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Home</a>
                         <a href="{{ route('products.index') }}" class="text-red-600 px-3 py-2 text-sm font-medium">Produtos</a>
+                        <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                            </svg>
+                            <span>Carrinho</span>
+                        </a>
                         @auth
                         <a href="{{ route('admin.dashboard') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200">Admin</a>
                         @else
@@ -130,9 +136,26 @@ use Illuminate\Support\Facades\Storage;
                             @endif
                         </div>
 
-                        <a href="{{ route('products.show', $product->slug) }}" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors duration-200">
-                            Ver Detalhes
-                        </a>
+                        <div class="flex space-x-2">
+                            <form method="POST" action="{{ route('cart.add', $product->id) }}" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit"
+                                    class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                                    </svg>
+                                    <span>Adicionar</span>
+                                </button>
+                            </form>
+                            <a href="{{ route('products.show', $product->slug) }}"
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded text-sm font-medium transition-colors duration-200 flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
 
                     @if($product->stock_quantity <= 5 && $product->stock_quantity > 0)

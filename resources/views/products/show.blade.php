@@ -37,6 +37,12 @@ use Illuminate\Support\Facades\Storage;
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Home</a>
                         <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Produtos</a>
+                        <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                            </svg>
+                            <span>Carrinho</span>
+                        </a>
                         @auth
                         <a href="{{ route('admin.dashboard') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200">Admin</a>
                         @else
@@ -142,18 +148,24 @@ use Illuminate\Support\Facades\Storage;
                 <!-- Ações -->
                 <div class="space-y-4">
                     @if($product->stock_quantity > 0)
-                    <div class="flex items-center space-x-4">
-                        <label for="quantity" class="text-sm font-medium text-gray-900">Quantidade:</label>
-                        <select id="quantity" class="border border-gray-300 rounded px-3 py-2">
-                            @for($i = 1; $i <= min($product->stock_quantity, 10); $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                        </select>
-                    </div>
+                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="space-y-4">
+                        @csrf
+                        <div class="flex items-center space-x-4">
+                            <label for="quantity" class="text-sm font-medium text-gray-900">Quantidade:</label>
+                            <select name="quantity" id="quantity" class="border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                @for($i = 1; $i <= min($product->stock_quantity, 10); $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                            </select>
+                        </div>
 
-                    <button onclick="addToCart()" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors duration-200">
-                        Solicitar Orçamento
-                    </button>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                            </svg>
+                            <span>Adicionar ao Carrinho</span>
+                        </button>
+                    </form>
                     @else
                     <button disabled class="w-full bg-gray-400 text-white py-3 px-6 rounded-lg font-medium cursor-not-allowed">
                         Produto Indisponível
