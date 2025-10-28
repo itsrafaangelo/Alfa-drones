@@ -37,11 +37,11 @@ use Illuminate\Support\Facades\Storage;
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="#sobre" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Sobre</a>
                         <a href="#servicos" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Serviços</a>
-                        <a href="#agricultura" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Agricultura</a>
+                        <a href="{{ route('agriculture.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Agricultura</a>
                         <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Produtos</a>
                         <a href="#contato" class="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200">Contato</a>
                         @auth
-                        <a href="{{ route('inventory.index') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200">Admin</a>
+                        <a href="{{ route('admin.estoque.index') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200">Admin</a>
                         @else
                         <a href="{{ route('login') }}" class="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200">Login</a>
                         @endauth
@@ -65,11 +65,11 @@ use Illuminate\Support\Facades\Storage;
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
                 <a href="#sobre" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Sobre</a>
                 <a href="#servicos" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Serviços</a>
-                <a href="#agricultura" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Agricultura</a>
+                <a href="{{ route('agriculture.index') }}" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Agricultura</a>
                 <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Produtos</a>
                 <a href="#contato" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Contato</a>
                 @auth
-                <a href="{{ route('inventory.index') }}" class="bg-red-600 text-white block px-3 py-2 text-base font-medium rounded-md">Admin</a>
+                <a href="{{ route('admin.estoque.index') }}" class="bg-red-600 text-white block px-3 py-2 text-base font-medium rounded-md">Admin</a>
                 @else
                 <a href="{{ route('login') }}" class="bg-red-600 text-white block px-3 py-2 text-base font-medium rounded-md">Login</a>
                 @endauth
@@ -151,97 +151,129 @@ use Illuminate\Support\Facades\Storage;
     </section>
 
     <!-- Sobre Section -->
-    <section id="sobre" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Sobre a Alfa Drones</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                    Especializada em soluções inovadoras com drones, oferecemos tecnologia de ponta para mapeamento aéreo,
-                    agricultura de precisão e inspeções técnicas profissionais.
+    <section id="sobre" class="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: 
+                linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.1) 1px, transparent 1px);
+                background-size: 50px 50px;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Sobre a <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Alfa Drones</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    A Alfa Drones é especializada em soluções com drones para agricultura, engenharia, inspeções e filmagens. Com equipamentos modernos e equipe técnica certificada, oferecemos precisão, segurança e eficiência em cada voo.
                 </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto mt-6 rounded-full"></div>
             </div>
 
+            <!-- Features Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                <!-- Feature 1 -->
+                <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Tecnologia Avançada</h3>
-                    <p class="text-gray-600">Equipamentos de última geração para resultados precisos e confiáveis</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center group-hover:text-red-600 transition-colors">Tecnologia Avançada</h3>
+                    <p class="text-gray-600 text-center leading-relaxed">Equipamentos de última geração para resultados precisos e confiáveis</p>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <!-- Feature 2 -->
+                <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Qualidade Garantida</h3>
-                    <p class="text-gray-600">Compromisso com a excelência em todos os nossos serviços</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center group-hover:text-red-600 transition-colors">Qualidade Garantida</h3>
+                    <p class="text-gray-600 text-center leading-relaxed">Compromisso com a excelência em todos os nossos serviços</p>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20a3 3 0 01-3-3v-2a3 3 0 01.879-2.121M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <!-- Feature 3 -->
+                <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Equipe Especializada</h3>
-                    <p class="text-gray-600">Profissionais certificados e experientes no setor</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 text-center group-hover:text-red-600 transition-colors">Equipe Especializada</h3>
+                    <p class="text-gray-600 text-center leading-relaxed">Profissionais certificados e experientes no setor</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Serviços Section -->
-    <section id="servicos" class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Nossos Serviços</h2>
-                <p class="text-lg text-gray-600">Soluções completas para diferentes necessidades</p>
+    <section id="servicos" class="py-20 bg-white relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: 
+                linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.1) 1px, transparent 1px);
+                background-size: 50px 50px;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    Nossos <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Serviços</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Soluções completas para diferentes necessidades</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto mt-6 rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="text-red-600 mb-4">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            <!-- Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mapeamento Aéreo</h3>
-                    <p class="text-gray-600">Levantamentos topográficos precisos e ortofotocartas de alta resolução</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Mapeamento Aéreo</h3>
+                    <p class="text-gray-600 leading-relaxed">Produção de ortofotos, curvas de nível e modelos 3D com alta precisão.</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="text-red-600 mb-4">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <!-- Service 2 -->
+                <div class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Agricultura de Precisão</h3>
-                    <p class="text-gray-600">Monitoramento de culturas e análise de variabilidade espacial</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Agricultura de Precisão</h3>
+                    <p class="text-gray-600 leading-relaxed">Monitoramento de lavouras, pulverização aérea e análise de solo via drones.</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="text-red-600 mb-4">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <!-- Service 3 -->
+                <div class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Inspeções Técnicas</h3>
-                    <p class="text-gray-600">Inspeções de infraestrutura, torres, linhas de transmissão</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Inspeções Técnicas</h3>
+                    <p class="text-gray-600 leading-relaxed">Inspeções de telhados, torres, linhas de transmissão e estruturas com difícil acesso.</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="text-red-600 mb-4">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                <!-- Service 4 -->
+                <div class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Filmagens Aéreas</h3>
-                    <p class="text-gray-600">Produção audiovisual profissional para eventos e marketing</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Eventos e Publicidade</h3>
+                    <p class="text-gray-600 leading-relaxed">Filmagens aéreas para casamentos, eventos corporativos e vídeos promocionais.</p>
                 </div>
             </div>
         </div>
@@ -258,81 +290,76 @@ use Illuminate\Support\Facades\Storage;
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <!-- Header Section -->
             <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl mb-6 shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                </div>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                     Produtos <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Destacados</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
                     Equipamentos de última geração selecionados para profissionais que buscam excelência
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto mt-6 rounded-full"></div>
             </div>
 
             <!-- Products Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($featuredProducts as $index => $product)
-                <div class="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 animate-fade-in-up"
+                <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100"
                     data-delay="{{ $index * 150 }}">
 
                     <!-- Image Container -->
-                    <div class="relative overflow-hidden rounded-t-3xl">
+                    <div class="relative overflow-hidden">
                         @if($product->image_path)
                         <img src="{{ Storage::url($product->image_path) }}"
                             alt="{{ $product->name }}"
-                            class="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110">
+                            class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                         @else
-                        <div class="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                             </svg>
                         </div>
                         @endif
 
                         <!-- Category Badge -->
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-white/90 backdrop-blur-sm text-red-600 px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-white/90 backdrop-blur-sm text-red-600 px-2.5 py-1 rounded-full text-xs font-semibold shadow-md">
                                 {{ $product->category->name }}
                             </span>
                         </div>
 
                         @if($product->sale_price)
                         <!-- Discount Badge -->
-                        <div class="absolute top-4 right-4">
-                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                        <div class="absolute top-3 right-3">
+                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-md">
                                 {{ number_format((($product->price - $product->sale_price) / $product->price) * 100, 0) }}% OFF
                             </span>
                         </div>
                         @endif
 
                         <!-- Overlay Gradient -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
 
                     <!-- Content -->
-                    <div class="p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300 line-clamp-1">
                             {{ $product->name }}
                         </h3>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed line-clamp-2">
-                            {{ $product->short_description ?? Str::limit($product->description, 120) }}
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+                            {{ $product->short_description ?? Str::limit($product->description, 80) }}
                         </p>
 
                         <!-- Price Section -->
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div class="flex flex-col">
                                 @if($product->sale_price)
-                                <span class="text-sm text-gray-500 line-through mb-1">
+                                <span class="text-xs text-gray-500 line-through">
                                     R$ {{ number_format($product->price, 2, ',', '.') }}
                                 </span>
-                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">
+                                <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">
                                     R$ {{ number_format($product->sale_price, 2, ',', '.') }}
                                 </span>
                                 @else
-                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">
+                                <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">
                                     R$ {{ number_format($product->price, 2, ',', '.') }}
                                 </span>
                                 @endif
@@ -341,7 +368,7 @@ use Illuminate\Support\Facades\Storage;
                             <!-- Stock Indicator -->
                             @if($product->stock_quantity <= 5 && $product->stock_quantity > 0)
                                 <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium">
-                                    Últimas {{ $product->stock_quantity }} unidades
+                                    {{ $product->stock_quantity }} un.
                                 </span>
                                 @elseif($product->stock_quantity == 0)
                                 <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">
@@ -349,21 +376,18 @@ use Illuminate\Support\Facades\Storage;
                                 </span>
                                 @else
                                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                                    Em estoque
+                                    Estoque
                                 </span>
                                 @endif
                         </div>
 
                         <!-- Action Button -->
                         <a href="{{ route('products.show', $product->slug) }}"
-                            class="group/btn relative w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 overflow-hidden">
-                            <span class="relative z-10">Ver Detalhes</span>
-                            <svg class="w-5 h-5 relative z-10 transform transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="group/btn w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg flex items-center justify-center space-x-2">
+                            <span>Ver Detalhes</span>
+                            <svg class="w-4 h-4 transform transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
-
-                            <!-- Button Shine Effect -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
                         </a>
                     </div>
                 </div>
@@ -371,16 +395,16 @@ use Illuminate\Support\Facades\Storage;
             </div>
 
             <!-- CTA Section -->
-            <div class="text-center mt-20">
-                <div class="bg-white rounded-3xl shadow-xl p-10 max-w-2xl mx-auto border border-gray-100">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">
+            <div class="text-center mt-12">
+                <div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto border border-gray-100">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">
                         Explore Nossa Linha Completa
                     </h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">
-                        Descubra mais de 50 produtos especializados para suas necessidades profissionais
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Descubra mais produtos especializados para suas necessidades profissionais
                     </p>
                     <a href="{{ route('products.index') }}"
-                        class="group inline-flex items-center bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-10 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl space-x-3">
+                        class="group inline-flex items-center bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg space-x-2">
                         <span>Ver Todos os Produtos</span>
                         <svg class="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -393,7 +417,7 @@ use Illuminate\Support\Facades\Storage;
     @endif
 
     <!-- Agricultura Section -->
-    <section id="agricultura" class="py-16 bg-gray-50">
+    <!-- <section id="agricultura" class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
@@ -456,46 +480,60 @@ use Illuminate\Support\Facades\Storage;
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Contato Section -->
-    <section id="contato" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Entre em Contato</h2>
-                <p class="text-lg text-gray-600">Pronto para revolucionar seu negócio com tecnologia drone?</p>
+    <section id="contato" class="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: 
+                linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.1) 1px, transparent 1px);
+                background-size: 50px 50px;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    Entre em <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Contato</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Pronto para revolucionar seu negócio com tecnologia drone?</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto mt-6 rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="bg-red-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                <!-- Telefone -->
+                <div class="group text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Telefone</h3>
-                    <p class="text-gray-600">(11) 99999-9999</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Telefone</h3>
+                    <p class="text-gray-600 font-medium">(11) 99999-9999</p>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-red-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <!-- Email -->
+                <div class="group text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Email</h3>
-                    <p class="text-gray-600">contato@alfadrones.com.br</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Email</h3>
+                    <p class="text-gray-600 font-medium break-words">contato@alfadrones.com.br</p>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-red-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <!-- Localização -->
+                <div class="group text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Localização</h3>
-                    <p class="text-gray-600">São Paulo, SP</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">Localização</h3>
+                    <p class="text-gray-600 font-medium">São Paulo, SP</p>
                 </div>
             </div>
         </div>

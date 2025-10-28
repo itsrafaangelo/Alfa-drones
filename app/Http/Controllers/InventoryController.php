@@ -78,11 +78,33 @@ class InventoryController extends Controller
             'active' => 'boolean',
             'featured' => 'boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'specifications_keys' => 'nullable|array',
+            'specifications_keys.*' => 'nullable|string|max:255',
+            'specifications_values' => 'nullable|array',
+            'specifications_values.*' => 'nullable|string|max:255',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['active'] = $request->has('active');
         $validated['featured'] = $request->has('featured');
+
+        // Processar especificações
+        if ($request->has('specifications_keys') && $request->has('specifications_values')) {
+            $keys = $request->specifications_keys;
+            $values = $request->specifications_values;
+            $specifications = [];
+
+            foreach ($keys as $index => $key) {
+                if (!empty($key) && !empty($values[$index])) {
+                    $specifications[$key] = $values[$index];
+                }
+            }
+
+            $validated['specifications'] = !empty($specifications) ? $specifications : null;
+        }
+
+        // Remover chaves temporárias
+        unset($validated['specifications_keys'], $validated['specifications_values']);
 
         // Upload da imagem
         if ($request->hasFile('image')) {
@@ -91,7 +113,7 @@ class InventoryController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('inventory.index')
+        return redirect()->route('admin.estoque.index')
             ->with('success', 'Produto cadastrado com sucesso!');
     }
 
@@ -131,11 +153,33 @@ class InventoryController extends Controller
             'featured' => 'boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'remove_current_image' => 'boolean',
+            'specifications_keys' => 'nullable|array',
+            'specifications_keys.*' => 'nullable|string|max:255',
+            'specifications_values' => 'nullable|array',
+            'specifications_values.*' => 'nullable|string|max:255',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['active'] = $request->has('active');
         $validated['featured'] = $request->has('featured');
+
+        // Processar especificações
+        if ($request->has('specifications_keys') && $request->has('specifications_values')) {
+            $keys = $request->specifications_keys;
+            $values = $request->specifications_values;
+            $specifications = [];
+
+            foreach ($keys as $index => $key) {
+                if (!empty($key) && !empty($values[$index])) {
+                    $specifications[$key] = $values[$index];
+                }
+            }
+
+            $validated['specifications'] = !empty($specifications) ? $specifications : null;
+        }
+
+        // Remover chaves temporárias
+        unset($validated['specifications_keys'], $validated['specifications_values']);
 
         // Gerenciar imagem
         if ($request->has('remove_current_image') && $request->remove_current_image) {
@@ -154,7 +198,7 @@ class InventoryController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('inventory.index')
+        return redirect()->route('admin.estoque.index')
             ->with('success', 'Produto atualizado com sucesso!');
     }
 
@@ -162,7 +206,7 @@ class InventoryController extends Controller
     {
         // Verificar se o produto tem pedidos associados
         if ($product->orderItems()->exists()) {
-            return redirect()->route('inventory.index')
+            return redirect()->route('admin.estoque.index')
                 ->with('error', 'Não é possível excluir um produto que possui pedidos associados.');
         }
 
@@ -173,7 +217,7 @@ class InventoryController extends Controller
 
         $product->delete();
 
-        return redirect()->route('inventory.index')
+        return redirect()->route('admin.estoque.index')
             ->with('success', 'Produto excluído com sucesso!');
     }
 
@@ -206,7 +250,7 @@ class InventoryController extends Controller
             $message .= " (Motivo: {$validated['reason']})";
         }
 
-        return redirect()->route('inventory.show', $product)
+        return redirect()->route('admin.estoque.show', $product)
             ->with('success', $message);
     }
 
@@ -220,7 +264,7 @@ class InventoryController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('inventory.show', $product)
+        return redirect()->route('admin.estoque.show', $product)
             ->with('success', 'Preços atualizados com sucesso!');
     }
 
@@ -239,5 +283,24 @@ class InventoryController extends Controller
         $topSellingProducts = Product::orderBy('sold_quantity', 'desc')->limit(10)->get();
 
         return view('inventory.reports', compact('stats', 'lowStockProducts', 'topSellingProducts'));
+    }
+
+    public function toggleStatus(Product $product)
+    {
+        // Alternar entre ativo e inativo
+        $product->status = $product->status === 'ativo' ? 'inativo' : 'ativo';
+        $product->save();
+
+        return redirect()->back()->with('success', 'Status do produto atualizado com sucesso!');
+    }
+
+    public function toggleFeatured(Product $product)
+    {
+        $product->featured = !$product->featured;
+        $product->save();
+
+        $message = $product->featured ? 'Produto marcado como destaque!' : 'Produto removido dos destaques!';
+
+        return redirect()->back()->with('success', $message);
     }
 }

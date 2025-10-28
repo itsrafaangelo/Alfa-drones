@@ -6,12 +6,15 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AgricultureController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\AlertController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas públicas
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/agricultura', [AgricultureController::class, 'index'])->name('agriculture.index');
 Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
 Route::get('/produto/{slug}', [ProductController::class, 'show'])->name('products.show');
 
@@ -30,42 +33,48 @@ Route::post('/pedido', [OrderController::class, 'store'])->name('orders.store');
 
 // Dashboard original do Breeze redirecionado para admin
 Route::get('/dashboard', function () {
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('admin.pedidos.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Rotas administrativas (protegidas por autenticação)
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/', function () {
+        return redirect()->route('admin.pedidos.index');
+    });
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
-    // Produtos
-    Route::resource('produtos', AdminProductController::class, [
-        'names' => [
-            'index' => 'products.index',
-            'create' => 'products.create',
-            'store' => 'products.store',
-            'show' => 'products.show',
-            'edit' => 'products.edit',
-            'update' => 'products.update',
-            'destroy' => 'products.destroy',
-        ]
-    ]);
+    // Alertas
+    Route::get('alertas', [AlertController::class, 'index'])->name('alertas.index');
+    Route::post('alertas/{id}/toggle', [AlertController::class, 'toggle'])->name('alertas.toggle');
+    Route::delete('alertas/{id}', [AlertController::class, 'destroy'])->name('alertas.destroy');
+
+    // Pedidos
+    Route::get('pedidos', [AdminOrderController::class, 'index'])->name('pedidos.index');
+    Route::get('pedidos/{order}', [AdminOrderController::class, 'show'])->name('pedidos.show');
+    Route::post('pedidos/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('pedidos.update-status');
 });
 
-// Rotas do sistema de controle de estoque (protegidas por autenticação)
-Route::middleware(['auth', 'verified'])->group(function () {
+// Rotas do sistema de controle de estoque no padrão admin
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     // Rotas principais do estoque
-    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
-    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
-    Route::post('inventory', [InventoryController::class, 'store'])->name('inventory.store');
-    Route::get('inventory/{product}', [InventoryController::class, 'show'])->name('inventory.show');
-    Route::get('inventory/{product}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
-    Route::put('inventory/{product}', [InventoryController::class, 'update'])->name('inventory.update');
-    Route::delete('inventory/{product}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+    Route::get('estoque', [InventoryController::class, 'index'])->name('estoque.index');
+    Route::get('estoque/create', [InventoryController::class, 'create'])->name('estoque.create');
+    Route::post('estoque', [InventoryController::class, 'store'])->name('estoque.store');
+    Route::get('estoque/{product}', [InventoryController::class, 'show'])->name('estoque.show');
+    Route::get('estoque/{product}/edit', [InventoryController::class, 'edit'])->name('estoque.edit');
+    Route::put('estoque/{product}', [InventoryController::class, 'update'])->name('estoque.update');
+    Route::delete('estoque/{product}', [InventoryController::class, 'destroy'])->name('estoque.destroy');
+
+    // Toggle actions
+    Route::post('estoque/{product}/toggle-status', [InventoryController::class, 'toggleStatus'])->name('estoque.toggle-status');
+    Route::post('estoque/{product}/toggle-featured', [InventoryController::class, 'toggleFeatured'])->name('estoque.toggle-featured');
 
     // Rotas específicas para ajuste de estoque e preços
-    Route::post('inventory/{product}/adjust-stock', [InventoryController::class, 'adjustStock'])->name('inventory.adjust-stock');
-    Route::post('inventory/{product}/update-price', [InventoryController::class, 'updatePrice'])->name('inventory.update-price');
-    Route::get('inventory-reports', [InventoryController::class, 'reports'])->name('inventory.reports');
+    Route::post('estoque/{product}/adjust-stock', [InventoryController::class, 'adjustStock'])->name('estoque.adjust-stock');
+    Route::post('estoque/{product}/update-price', [InventoryController::class, 'updatePrice'])->name('estoque.update-price');
+
+    // Rota para relatórios
+    Route::get('relatorios', [InventoryController::class, 'reports'])->name('relatorios.index');
 });
 
 Route::middleware('auth')->group(function () {
