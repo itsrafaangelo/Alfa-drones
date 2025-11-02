@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    name: :rocket: Deploy do Projeto
+    name: Deploy do Projeto
     runs-on: ubuntu-latest # Usar a última versão estável do Ubuntu
 
     steps:
