@@ -56,7 +56,7 @@ jobs:
 
           # Configurações do rsync
           SOURCE: "./" # Diretório de origem (raiz do projeto)
-          TARGET: "public_html/alfadrones" # Mude se seu Laravel não estiver na raiz (ex: "dominios/meusite.com/public_html")
+          TARGET: "domains/rafael.software/public_html/alfadrones" # Mude se seu Laravel não estiver na raiz (ex: "dominios/meusite.com/public_html")
           ARGS: "--links --info=progress2 --delete --exclude-from=rsync-exclude.txt" # Args para rsync
 
       # 7. Executar Comandos Pós-Deploy no Servidor
