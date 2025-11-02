@@ -556,7 +556,7 @@ use Illuminate\Support\Facades\Storage;
                         <li><a href="#contato" class="text-gray-600 hover:text-red-600 transition-colors duration-200">Contato</a></li>
                     </ul>
                 </div>
-
+<!-- 
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Serviços</h3>
                     <ul class="space-y-2">
@@ -565,7 +565,7 @@ use Illuminate\Support\Facades\Storage;
                         <li><span class="text-gray-600">Inspeções Técnicas</span></li>
                         <li><span class="text-gray-600">Filmagens Aéreas</span></li>
                     </ul>
-                </div>
+                </div> -->
             </div>
 
             <div class="border-t border-gray-300 mt-8 pt-8 text-center text-gray-600">
