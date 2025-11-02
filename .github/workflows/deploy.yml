@@ -1,0 +1,91 @@
+# .github/workflows/deploy.yml
+
+name: Deploy Alfa-Drones para Hostinger
+
+# Gatilho: Executar este workflow sempre que um push for feito na branch 'main'
+on:
+  push:
+    branches:
+      - main  # Mude para 'master' ou sua branch de produção, se for diferente
+
+jobs:
+  deploy:
+    name: :rocket: Deploy do Projeto
+    runs-on: ubuntu-latest # Usar a última versão estável do Ubuntu
+
+    steps:
+      # 1. Checkout do Código
+      # Baixa o código do seu repositório para a máquina virtual do Actions
+      - name: 1. Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # 2. Configurar PHP
+      # Notei no seu composer.json que você usa PHP 8.2
+      - name: 2. Configurar PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, json, openssl, pdo, mysql, dom, curl, fileinfo, bcmath # Extensões comuns do Laravel
+          tools: composer # Instala o composer automaticamente
+
+      # 3. Configurar Node.js (para buildar o Vite)
+      - name: 3. Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a versão LTS mais recente
+          cache: 'npm' # Habilita cache do NPM para builds mais rápidos
+
+      # 4. Instalar Dependências do NPM
+      - name: 4. Instalar Dependências NPM
+        run: npm install
+
+      # 5. Buildar Assets de Frontend (Vite)
+      # Isso gera a pasta /public/build com seus assets compilados
+      - name: 5. Buildar Assets (Vite)
+        run: npm run build
+
+      # 6. Sincronizar Arquivos com o Servidor (Deploy via SSH/rsync)
+      - name: 6. Sincronizar Arquivos com Hostinger
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          # Segredos que configuramos no GitHub
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+
+          # Configurações do rsync
+          SOURCE: "./" # Diretório de origem (raiz do projeto)
+          TARGET_DIRECTORY: "public_html" # Mude se seu Laravel não estiver na raiz (ex: "dominios/meusite.com/public_html")
+          ARGS: "--links --info=progress2 --delete --exclude-from=rsync-exclude.txt" # Args para rsync
+
+      # 7. Executar Comandos Pós-Deploy no Servidor
+      - name: 7. Executar Comandos Pós-Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            # Navega para o diretório de destino
+            cd domains/rafael.software/public_html/alfadrones/ # Ajuste este caminho se for diferente
+            
+            # Instala dependências do Composer (sem dev)
+            # Na Hostinger, pode ser necessário usar "php8.2 /usr/local/bin/composer"
+            php8.2 /usr/local/bin/composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
+            
+            # Roda as migrações (o --force é vital para produção)
+            php8.2 artisan migrate --force
+            
+            # Limpa e cria caches de produção
+            php8.2 artisan config:cache
+            php8.2 artisan route:cache
+            php8.2 artisan view:cache
+            
+            # Recria o link de armazenamento
+            # Remove o link antigo para evitar erros e depois recria
+            rm -f public/storage
+            php8.2 artisan storage:link
+            
+            echo ":white_check_mark: Deploy finalizado com sucesso!"
