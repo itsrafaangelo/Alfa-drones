@@ -22,13 +22,7 @@ use Illuminate\Support\Facades\Storage;
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">ALFA DRONES</span>
-                        <span class="text-xs text-gray-500 ml-2">SOLUÇÕES E IMAGENS</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-16 w-auto">
                     </a>
                 </div>
 
@@ -540,46 +534,41 @@ use Illuminate\Support\Facades\Storage;
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="bg-gray-100 border-t border-gray-200 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
-                        <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold">ALFA DRONES</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-16 w-auto">
                     </div>
-                    <p class="text-gray-400 mb-4">
+                    <p class="text-gray-600 mb-4">
                         Especializada em soluções inovadoras com drones para mapeamento aéreo,
                         agricultura de precisão e inspeções técnicas.
                     </p>
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Links Rápidos</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Links Rápidos</h3>
                     <ul class="space-y-2">
-                        <li><a href="#sobre" class="text-gray-400 hover:text-white transition-colors duration-200">Sobre</a></li>
-                        <li><a href="#servicos" class="text-gray-400 hover:text-white transition-colors duration-200">Serviços</a></li>
-                        <li><a href="{{ route('products.index') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Produtos</a></li>
-                        <li><a href="#contato" class="text-gray-400 hover:text-white transition-colors duration-200">Contato</a></li>
+                        <li><a href="#sobre" class="text-gray-600 hover:text-red-600 transition-colors duration-200">Sobre</a></li>
+                        <li><a href="#servicos" class="text-gray-600 hover:text-red-600 transition-colors duration-200">Serviços</a></li>
+                        <li><a href="{{ route('products.index') }}" class="text-gray-600 hover:text-red-600 transition-colors duration-200">Produtos</a></li>
+                        <li><a href="#contato" class="text-gray-600 hover:text-red-600 transition-colors duration-200">Contato</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Serviços</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Serviços</h3>
                     <ul class="space-y-2">
-                        <li><span class="text-gray-400">Mapeamento Aéreo</span></li>
-                        <li><span class="text-gray-400">Agricultura de Precisão</span></li>
-                        <li><span class="text-gray-400">Inspeções Técnicas</span></li>
-                        <li><span class="text-gray-400">Filmagens Aéreas</span></li>
+                        <li><span class="text-gray-600">Mapeamento Aéreo</span></li>
+                        <li><span class="text-gray-600">Agricultura de Precisão</span></li>
+                        <li><span class="text-gray-600">Inspeções Técnicas</span></li>
+                        <li><span class="text-gray-600">Filmagens Aéreas</span></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <div class="border-t border-gray-300 mt-8 pt-8 text-center text-gray-600">
                 <p>&copy; {{ date('Y') }} Alfa Drones. Todos os direitos reservados.</p>
             </div>
         </div>

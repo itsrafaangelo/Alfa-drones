@@ -22,13 +22,7 @@ use Illuminate\Support\Facades\Storage;
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">ALFA DRONES</span>
-                        <span class="text-xs text-gray-500 ml-2">SOLUÇÕES E IMAGENS</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-16 w-auto">
                     </a>
                 </div>
 
@@ -199,19 +193,14 @@ use Illuminate\Support\Facades\Storage;
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 mt-16">
+    <footer class="bg-gray-100 border-t border-gray-200 py-12 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex items-center justify-center mb-4">
-                    <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold">ALFA DRONES</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-16 w-auto">
                 </div>
-                <p class="text-gray-400 mb-4">Especializada em soluções inovadoras com drones</p>
-                <div class="border-t border-gray-800 pt-4 text-gray-400">
+                <p class="text-gray-600 mb-4">Especializada em soluções inovadoras com drones</p>
+                <div class="border-t border-gray-300 pt-4 text-gray-600">
                     <p>&copy; {{ date('Y') }} Alfa Drones. Todos os direitos reservados.</p>
                 </div>
             </div>

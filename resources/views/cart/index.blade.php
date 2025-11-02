@@ -20,15 +20,9 @@ use Illuminate\Support\Facades\Storage;
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center">
+                <div class="flex items-center flex-shrink-0">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">ALFA DRONES</span>
-                        <span class="text-xs text-gray-500 ml-2">SOLUÇÕES E IMAGENS</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-12 md:h-16 w-auto">
                     </a>
                 </div>
 
@@ -50,20 +44,71 @@ use Illuminate\Support\Facades\Storage;
                         @endauth
                     </div>
                 </div>
+
+                <!-- Menu Mobile: Carrinho e Hamburger -->
+                <div class="md:hidden flex items-center space-x-2">
+                    <!-- Botão Carrinho Mobile -->
+                    <a href="{{ route('cart.index') }}" class="relative inline-flex items-center justify-center p-2 rounded-md text-red-600 hover:text-red-900 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
+                        <span class="sr-only">Carrinho</span>
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                        </svg>
+                    </a>
+                    <!-- Botão Hamburger -->
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
+                        <span class="sr-only">Abrir menu principal</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+                <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Home</a>
+                <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-red-600 block px-3 py-2 text-base font-medium">Produtos</a>
+                <a href="{{ route('cart.index') }}" class="text-red-600 flex items-center px-3 py-2 text-base font-medium">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 18m-7.5-5l7.5-5" />
+                    </svg>
+                    Carrinho
+                </a>
+                @auth
+                <a href="{{ route('admin.dashboard') }}" class="bg-red-600 text-white block px-3 py-2 text-base font-medium rounded-md">Admin</a>
+                @else
+                <a href="{{ route('login') }}" class="bg-red-600 text-white block px-3 py-2 text-base font-medium rounded-md">Login</a>
+                @endauth
             </div>
         </div>
     </nav>
 
+    <script>
+        // Menu mobile toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (button && menu) {
+                button.addEventListener('click', function() {
+                    menu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+
     <!-- Header -->
     <div class="bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 class="text-3xl font-bold text-gray-900">Carrinho de Compras</h1>
-            <p class="text-gray-600 mt-2">Revise seus produtos antes de finalizar a compra</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Carrinho de Compras</h1>
+            <p class="text-sm md:text-base text-gray-600 mt-2">Revise seus produtos antes de finalizar a compra</p>
         </div>
     </div>
 
     <!-- Conteúdo -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">
         @if(session('success'))
         <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
             {{ session('success') }}
@@ -81,73 +126,79 @@ use Illuminate\Support\Facades\Storage;
             <!-- Lista de Produtos -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-4">Produtos no Carrinho</h2>
+                    <div class="p-4 md:p-6">
+                        <h2 class="text-base md:text-lg font-semibold text-gray-900 mb-4">Produtos no Carrinho</h2>
 
                         <div class="space-y-4">
                             @foreach($cartItems as $item)
-                            <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                                <!-- Imagem do Produto -->
-                                <div class="flex-shrink-0">
-                                    @if($item['product']->image_path)
-                                    <img src="{{ Storage::url($item['product']->image_path) }}"
-                                        alt="{{ $item['product']->name }}"
-                                        class="w-20 h-20 object-cover rounded-lg">
-                                    @else
-                                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                        </svg>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 border border-gray-200 rounded-lg">
+                                <!-- Imagem e Informações do Produto -->
+                                <div class="flex items-start space-x-4 flex-1 min-w-0">
+                                    <!-- Imagem do Produto -->
+                                    <div class="flex-shrink-0">
+                                        @if($item['product']->image_path)
+                                        <img src="{{ Storage::url($item['product']->image_path) }}"
+                                            alt="{{ $item['product']->name }}"
+                                            class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg">
+                                        @else
+                                        <div class="w-20 h-20 md:w-24 md:h-24 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                            </svg>
+                                        </div>
+                                        @endif
                                     </div>
-                                    @endif
+
+                                    <!-- Informações do Produto -->
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="text-base md:text-lg font-medium text-gray-900 break-words">{{ $item['product']->name }}</h3>
+                                        <p class="text-sm text-gray-600 mt-1">{{ $item['product']->category->name }}</p>
+                                        <p class="text-base md:text-lg font-semibold text-red-600 mt-2">
+                                            R$ {{ number_format($item['product']->current_price, 2, ',', '.') }}
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <!-- Informações do Produto -->
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-medium text-gray-900">{{ $item['product']->name }}</h3>
-                                    <p class="text-sm text-gray-600">{{ $item['product']->category->name }}</p>
-                                    <p class="text-lg font-semibold text-red-600 mt-1">
-                                        R$ {{ number_format($item['product']->current_price, 2, ',', '.') }}
-                                    </p>
-                                </div>
+                                <!-- Controles de Quantidade e Preço -->
+                                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                                    <!-- Controles de Quantidade -->
+                                    <div class="flex items-center justify-center md:justify-start space-x-2">
+                                        <form method="POST" action="{{ route('cart.update', $item['product']->id) }}" class="flex items-center space-x-2">
+                                            @csrf
+                                            <button type="submit" name="quantity" value="{{ $item['quantity'] - 1 }}"
+                                                class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>
+                                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                                </svg>
+                                            </button>
 
-                                <!-- Controles de Quantidade -->
-                                <div class="flex items-center space-x-2">
-                                    <form method="POST" action="{{ route('cart.update', $item['product']->id) }}" class="flex items-center space-x-2">
-                                        @csrf
-                                        <button type="submit" name="quantity" value="{{ $item['quantity'] - 1 }}"
-                                            class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors duration-200"
-                                            {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>
-                                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                            </svg>
-                                        </button>
+                                            <input type="number" value="{{ $item['quantity'] }}" min="1" max="{{ $item['product']->stock_quantity }}"
+                                                class="w-16 px-2 py-1 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                                onchange="this.form.submit()">
 
-                                        <input type="number" value="{{ $item['quantity'] }}" min="1" max="{{ $item['product']->stock_quantity }}"
-                                            class="w-16 px-2 py-1 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                            onchange="this.form.submit()">
+                                            <button type="submit" name="quantity" value="{{ $item['quantity'] + 1 }}"
+                                                class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                {{ $item['quantity'] >= $item['product']->stock_quantity ? 'disabled' : '' }}>
+                                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
 
-                                        <button type="submit" name="quantity" value="{{ $item['quantity'] + 1 }}"
-                                            class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors duration-200"
-                                            {{ $item['quantity'] >= $item['product']->stock_quantity ? 'disabled' : '' }}>
-                                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-
-                                <!-- Subtotal e Remover -->
-                                <div class="text-right">
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        R$ {{ number_format($item['subtotal'], 2, ',', '.') }}
-                                    </p>
-                                    <form method="POST" action="{{ route('cart.remove', $item['product']->id) }}" class="mt-2">
-                                        @csrf
-                                        <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors duration-200">
-                                            Remover
-                                        </button>
-                                    </form>
+                                    <!-- Subtotal e Remover -->
+                                    <div class="text-center md:text-right flex flex-col md:block">
+                                        <p class="text-lg font-semibold text-gray-900">
+                                            R$ {{ number_format($item['subtotal'], 2, ',', '.') }}
+                                        </p>
+                                        <form method="POST" action="{{ route('cart.remove', $item['product']->id) }}" class="mt-2">
+                                            @csrf
+                                            <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors duration-200">
+                                                Remover
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             @endforeach
@@ -223,19 +274,14 @@ use Illuminate\Support\Facades\Storage;
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 mt-16">
+    <footer class="bg-gray-100 border-t border-gray-200 py-12 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <div class="flex items-center justify-center mb-4">
-                    <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold">ALFA DRONES</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-16 w-auto">
                 </div>
-                <p class="text-gray-400 mb-4">Especializada em soluções inovadoras com drones</p>
-                <div class="border-t border-gray-800 pt-4 text-gray-400">
+                <p class="text-gray-600 mb-4">Especializada em soluções inovadoras com drones</p>
+                <div class="border-t border-gray-300 pt-4 text-gray-600">
                     <p>&copy; {{ date('Y') }} Alfa Drones. Todos os direitos reservados.</p>
                 </div>
             </div>

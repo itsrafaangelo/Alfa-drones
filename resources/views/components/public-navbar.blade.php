@@ -3,15 +3,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
-            <div class="flex items-center">
+            <div class="flex items-center flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <div class="w-8 h-8 bg-red-600 rounded-sm mr-3 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-gray-900">ALFA DRONES</span>
-                    <span class="text-xs text-gray-500 ml-2">SOLUÇÕES E IMAGENS</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Alfa Drones Logo" class="h-12 md:h-16 w-auto">
                 </a>
             </div>
 
@@ -32,8 +26,8 @@
             </div>
 
             <!-- Menu Mobile (Hamburger) -->
-            <div class="md:hidden">
-                <button type="button" id="mobile-menu-button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+            <div class="md:hidden flex items-center">
+                <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
                     <span class="sr-only">Abrir menu principal</span>
                     <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
