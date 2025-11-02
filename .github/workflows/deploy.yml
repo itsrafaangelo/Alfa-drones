@@ -42,11 +42,11 @@ jobs:
       # 5. Buildar Assets de Frontend (Vite)
       # Isso gera a pasta /public/build com seus assets compilados
       - name: 5. Buildar Assets (Vite)
-        run: npm run build --if-present
+        run: npm run build
 
       # 6. Sincronizar Arquivos com o Servidor (Deploy via SSH/rsync)
       - name: 6. Sincronizar Arquivos com Hostinger
-        uses: easingthemes/ssh-deploy@main
+        uses: easingthemes/ssh-deploy@v5
         with:
           # Segredos que configuramos no GitHub
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -60,7 +60,7 @@ jobs:
           ARGS: "--links --info=progress2 --delete --exclude-from=rsync-exclude.txt" # Args para rsync
 
       # 7. Executar Comandos Pós-Deploy no Servidor
-      - name: 7. Criar .env e Executar Comandos Pós-Deploy
+      - name: 7. Executar Comandos Pós-Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_HOST }}
@@ -69,71 +69,23 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           script: |
             # Navega para o diretório de destino
-            # IMPORTANTE: Ajuste este caminho se o seu projeto não estiver na raiz do public_html
-            cd public_html 
+            cd domains/rafael.software/public_html/alfadrones/ # Ajuste este caminho se for diferente
             
-            echo "Navegou para o diretório $(pwd)"
-
-            # --- CRIAÇÃO DO ARQUIVO .ENV ---
-            # Apaga o .env antigo (se existir) para garantir um novo limpo
-            rm -f .env
-            
-            echo "Criando novo arquivo .env..."
-
-            # Cria o novo .env usando os Secrets do GitHub
-            # O comando 'cat <<EOF' permite escrever um bloco de texto grande em um arquivo
-            cat <<EOF > .env
-            APP_NAME="Alfadrones"
-            APP_ENV=production
-            APP_DEBUG=false
-            APP_URL=${{ secrets.APP_URL }}
-            APP_KEY=${{ secrets.APP_KEY }}
-
-            LOG_CHANNEL=stack
-            LOG_LEVEL=debug
-
-            DB_CONNECTION=mysql
-            DB_HOST=127.0.0.1
-            DB_PORT=3306
-            DB_DATABASE=${{ secrets.DB_DATABASE }}
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-
-            # --- Configure o restante das suas variáveis de produção aqui ---
-            # Exemplo (baseado no seu .env.example):
-            SESSION_DRIVER=database
-            QUEUE_CONNECTION=database
-            CACHE_STORE=database
-
-            # Se você usa e-mails, adicione os secrets de MAIL_* aqui
-            # MAIL_MAILER=smtp
-            # MAIL_HOST=${{ secrets.MAIL_HOST }}
-            # MAIL_PORT=${{ secrets.MAIL_PORT }}
-            # ...etc
-            EOF
-            
-            echo "Arquivo .env criado com sucesso."
-            
-            # --- EXECUÇÃO DOS COMANDOS LARAVEL ---
-            
-            echo "Instalando dependências do Composer..."
             # Instala dependências do Composer (sem dev)
+            # Na Hostinger, pode ser necessário usar "php8.2 /usr/local/bin/composer"
             php8.2 /usr/local/bin/composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
             
-            echo "Executando migrações do banco..."
             # Roda as migrações (o --force é vital para produção)
             php8.2 artisan migrate --force
             
-            echo "Limpando e criando caches..."
             # Limpa e cria caches de produção
             php8.2 artisan config:cache
             php8.2 artisan route:cache
             php8.2 artisan view:cache
             
-            echo "Recriando link de armazenamento..."
             # Recria o link de armazenamento
             # Remove o link antigo para evitar erros e depois recria
             rm -f public/storage
             php8.2 artisan storage:link
             
-            echo "Deploy finalizado com sucesso!"
+            echo ":white_check_mark: Deploy finalizado com sucesso!"

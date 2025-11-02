@@ -1,0 +1,15 @@
+# Arquivos e pastas do Git
+.git*
+.github/
+
+# Arquivos de ambiente (gerenciados no servidor)
+.env
+.env.example
+
+# Dependências locais
+/node_modules
+/vendor
+
+# Outros
+rsync-exclude.txt
+README.md
